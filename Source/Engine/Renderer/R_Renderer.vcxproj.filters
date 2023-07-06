@@ -7,12 +7,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Renerer.cpp">
+    <ClCompile Include="R_Renderer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="R_Renderer.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
