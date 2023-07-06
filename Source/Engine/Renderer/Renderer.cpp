@@ -1,7 +1,4 @@
-#include "R_Renderer.h"
-#include <SDL2-devel-2.28.0-VC/SDL2-2.28.0/include/SDL.h>
-
-
+#include "Renderer.h"
 
 namespace kiko
 {
