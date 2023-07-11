@@ -1,4 +1,6 @@
 #pragma once
+#include <cmath>
+#include <sstream>
 
 namespace kiko
 {
@@ -32,6 +34,15 @@ namespace kiko
 		Vector2 Normalized() { return *this / Length(); }
 		void Normalize() { *this /= Length(); }
 	};
+
+	inline std::istream& operator >> (std::istream& stream, Vector2& v) 
+	{
+		std::string line;
+		std::getline(stream, line);
+
+
+		return stream;
+	}
 
 	using vec2 = Vector2;
 }

@@ -1,8 +1,11 @@
 #include "Renderer/Renderer.h"
 #include "Core/Core.h" //linked to a bunch of directories
 #include "Renderer/Model.h"
+#include"Input/InputSystem.h"
 #include <iostream> //searches the system instead
 #include <vector>
+#include <thread>
+
 using namespace std;
 
 class Star
@@ -15,7 +18,7 @@ public:
 
 	void Update()
 	{
-		m_pos += m_vel;
+		m_pos += m_vel * kiko::g_time.GetDeltaTime();
 	}
 
 	void Draw(kiko::Renderer& renderer)
@@ -28,34 +31,28 @@ public:
 	kiko::vec2 m_vel;
 };
 
-//adds literally too many things at once
-/*
-void func()
-{
-	int* p = new int[1000000000];
-}
-
-void funcs() //will crash your shit with a stack overflow
-{
-	int i[100000];
-	funcs();
-}
-*/
 
 int main(int argc, char* argv[])
 {
 
 	kiko::seedRandom((unsigned int)time(nullptr));
+	kiko::setFilePath("assests");
 
 	//our window setup
 	kiko::Renderer renderer;
 	renderer.Initialize();
 	renderer.CreateWindow("CSC196", 800, 600);
 
-	std::vector<kiko::vec2> points{ {-10, 5}, { 10, 5 }, { -10, -5 }, { -10, 5 } }; //initializer list, dont need to specify vec2 cause it already knows
-	kiko::Model model(points);
-	kiko::vec2 v{5, 5};
-	v.Normalize();
+	kiko::InputSystem inputSystem;
+	inputSystem.Initialize();
+
+	//std::vector<kiko::vec2> points{ {-10, 5}, { 10, 5 }, { -10, -5 }, { -10, 5 } }; //initializer list, dont need to specify vec2 cause it already knows
+	kiko::Model model;
+	model.Load("ship.txt");
+
+	//kiko::Model model(points);
+	//kiko::vec2 v{5, 5};
+	//v.Normalize();
 
 
 	//vector<umbra::Vector2> points; //an array of values
@@ -69,8 +66,28 @@ int main(int argc, char* argv[])
 		stars.push_back(Star(pos, vel));
 	}
 
-	while (true)
+	kiko::vec2 position{ 400, 300 };
+	float speed = 100; //pixels per second
+
+	// main game loop
+	bool quit = false;
+	while (!quit)
 	{
+		kiko::g_time.Tick();
+		inputSystem.Update();
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_ESCAPE))
+		{
+			quit = true;
+		}
+
+		kiko::vec2 direction;
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_W)) direction.y = -1;
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_S)) direction.y = 1;
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1;
+
+		position += direction * speed * kiko::g_time.GetDeltaTime();
+
 		renderer.SetColor(0, 0, 0, 0); //sets color to black
 		renderer.BeginFrame(); //clears the screen, allows for less static
 		//draw
@@ -85,72 +102,12 @@ int main(int argc, char* argv[])
 			renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}
 
-		model.Draw(renderer, { 400, 300 }, 25.6);
-
-		/*
-		for (int i = 0; i < 1000; i++)
-		{
-			umbra::Vector2 pos(umbra::random(renderer.GetWidth()), umbra::random(renderer.GetHeight()));
-
-			renderer.SetColor(umbra::random(256), umbra::random(256), 150, 255); //sets a random color BEFORE its drawn
-			renderer.DrawPoint(umbra::random(renderer.GetWidth()), umbra::random(renderer.GetHeight()));
-			//renderer.DrawLine(umbra::random(renderer.GetWidth()), umbra::random(renderer.GetHeight()), renderer.GetWidth(), umbra::random(renderer.GetHeight()));
-		}
-
-		for (int i = 0; i < 10; i++)
-		{
-
-		}
-		*/
+		model.Draw(renderer, position, 4.0f);
 
 		renderer.EndFrame();
+
+		//this_thread::sleep_for(chrono::milliseconds(10));
 	}
 
 	return 0;
 }
-
-//umbra::CreateWindow("CSC196", 800, 600);
-//cin.get(); // is a pause, prevents window from opening/closing too fast
-
-/*
-//memory time fellas
-umbra::g_memoryTracker.DisplayInfo();
-int* p = new int; //holds the ADDRESS of an int
-umbra::g_memoryTracker.DisplayInfo();
-delete p;
-umbra::g_memoryTracker.DisplayInfo();
-
-umbra::Time timer;
-for (int i = 0; i < 10000000000000000000; i++) {}
-cout << timer.GetElapsedSeconds() << endl;
-*/
-
-//chrono time, literally	
-//auto start = std::chrono::high_resolution_clock::now(); //auto - figures out the datatype by the code assignment
-//for (int i = 0; i < 10000000000000000000; i++) {}
-//auto end = std::chrono::high_resolution_clock::now();
-//cout << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << endl; //<casts> it into microsecodns
-
-/*
-cout << umbra::getFilePath() << endl;
-umbra::setFilePath("Assets"); //not case sensitive
-cout << umbra::getFilePath() << endl;
-
-size_t size;
-umbra::getFileSize("game.txt", size);
-cout << size << endl;
-
-std::string s;
-umbra::readFile("game.txt", s);
-cout << s << endl;
-*/
-
-// ../ goes back a SINGLE directory, can nagivate the entire directory
-
-/*
-umbra::seedRandom((unsigned int)time(nullptr)); //returns system time in seconds starting // () is a cast
-for (int i = 0; i < 10; i++)
-{
-	cout << umbra::random(10, 20) << endl;
-}
-*/
