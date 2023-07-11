@@ -1,8 +1,8 @@
 #include "Renderer/Renderer.h"
-#include "Core/Core.h" //linked to a bunch of directories
+#include "Core/Core.h" 
 #include "Renderer/Model.h"
 #include"Input/InputSystem.h"
-#include <iostream> //searches the system instead
+#include <iostream> 
 #include <vector>
 #include <thread>
 
