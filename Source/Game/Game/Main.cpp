@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 {
 
 	kiko::seedRandom((unsigned int)time(nullptr));
-	kiko::setFilePath("assests");
+	kiko::setFilePath("assets");
 
 	//our window setup
 	kiko::Renderer renderer;
