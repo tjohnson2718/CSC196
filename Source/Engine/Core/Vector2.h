@@ -28,12 +28,26 @@ namespace kiko
 		Vector2 operator /= (const Vector2& v) { x /= v.x; y /= v.y; return *this; }
 		Vector2 operator *= (const Vector2& v) { x *= v.x; y *= v.y; return *this; }
 		
-		float LengthSqr() { return (x * x) + (y * y); }
-		float Length() { return sqrt(LengthSqr()); }
+		float LengthSqr() const { return (x * x) + (y * y); }
+		float Length() const { return sqrt(LengthSqr()); }
 
-		Vector2 Normalized() { return *this / Length(); }
+		float DistanceSqr(const Vector2& v) const{ return (v - *this).LengthSqr(); }
+		float Distance(const Vector2& v) const{ return (v - *this).Length(); }
+
+		Vector2 Normalized() const { return *this / Length(); }
 		void Normalize() { *this /= Length(); }
+
+		float Angle() const { return std::atan2f(y, x); }
+		Vector2 Rotate(float radians) const;
 	};
+
+	inline Vector2 Vector2::Rotate(float radians) const
+	{
+		float _x = x * std::cos(radians) - y * std::sin(radians);
+		float _y = x * std::sin(radians) + y * std::cos(radians);
+
+		return { _x, _y };
+	}
 
 	inline std::istream& operator >> (std::istream& stream, Vector2& v) 
 	{

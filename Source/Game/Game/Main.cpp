@@ -34,7 +34,6 @@ public:
 
 int main(int argc, char* argv[])
 {
-
 	kiko::seedRandom((unsigned int)time(nullptr));
 	kiko::setFilePath("assets");
 
@@ -46,17 +45,10 @@ int main(int argc, char* argv[])
 	kiko::InputSystem inputSystem;
 	inputSystem.Initialize();
 
-	//std::vector<kiko::vec2> points{ {-10, 5}, { 10, 5 }, { -10, -5 }, { -10, 5 } }; //initializer list, dont need to specify vec2 cause it already knows
 	kiko::Model model;
 	model.Load("ship.txt");
 
-	//kiko::Model model(points);
-	//kiko::vec2 v{5, 5};
-	//v.Normalize();
-
-
-	//vector<umbra::Vector2> points; //an array of values
-	vector<Star> stars; //not in a namespace so its fine
+	vector<Star> stars; 
 
 	for (int i = 0; i < 1000; i++)
 	{
@@ -66,8 +58,11 @@ int main(int argc, char* argv[])
 		stars.push_back(Star(pos, vel));
 	}
 
+	kiko::Transform transform { { 400, 300 }, 0, 3 };
+
 	kiko::vec2 position{ 400, 300 };
 	float speed = 100; //pixels per second
+	float turnRate = kiko::DegreesToRadians(180);
 
 	// main game loop
 	bool quit = false;
@@ -80,13 +75,26 @@ int main(int argc, char* argv[])
 			quit = true;
 		}
 
-		kiko::vec2 direction;
+		float rotate = 0;
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_D)) rotate = 1;
+		transform.rotation += rotate * turnRate * kiko::g_time.GetDeltaTime();
+
+		float thrust = 0;
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_W)) thrust = 1;
+
+		kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(transform.rotation);
+		transform.position += forward * speed * thrust * kiko::g_time.GetDeltaTime();
+		transform.position.x = kiko::Wrap(transform.position.x, renderer.GetWidth());
+		transform.position.y = kiko::Wrap(transform.position.y, renderer.GetHeight());
+
+		/*kiko::vec2 direction;
 		if (inputSystem.GetKeyDown(SDL_SCANCODE_W)) direction.y = -1;
 		if (inputSystem.GetKeyDown(SDL_SCANCODE_S)) direction.y = 1;
 		if (inputSystem.GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
 		if (inputSystem.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1;
 
-		position += direction * speed * kiko::g_time.GetDeltaTime();
+		position += direction * speed * kiko::g_time.GetDeltaTime();*/
 
 		renderer.SetColor(0, 0, 0, 0); //sets color to black
 		renderer.BeginFrame(); //clears the screen, allows for less static
@@ -102,7 +110,7 @@ int main(int argc, char* argv[])
 			renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}
 
-		model.Draw(renderer, position, 4.0f);
+		model.Draw(renderer, transform.position, transform.rotation, transform.scale);
 
 		renderer.EndFrame();
 
