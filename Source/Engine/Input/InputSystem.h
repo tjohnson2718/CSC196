@@ -30,4 +30,6 @@ namespace kiko
 		std::vector<uint8_t> m_keyboardState;
 		std::vector<uint8_t> m_prevKeyboardState;\
 	};
+
+	extern InputSystem g_inputSystem;
 }

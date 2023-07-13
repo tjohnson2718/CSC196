@@ -12,6 +12,7 @@ namespace kiko
 		Vector2() : x{ 0 }, y{ 0 } {}
 		Vector2(float v) { x = 0; y = 0; }
 		Vector2(float x, float y) { this->x = x; this->y = y; }
+		Vector2(int x, int y) { this->x = (float)x; this->y = (float)y; }
 
 		Vector2 operator + (const Vector2& v) const { return Vector2(x + v.x, y + v.y); }
 		Vector2 operator - (const Vector2& v) const { return Vector2(x - v.x, y - v.y); }
