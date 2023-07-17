@@ -1,49 +1,55 @@
 #include "AudioSystem.h"
 
-bool kiko::AudioSystem::Initialize()
+namespace kiko
 {
-	FMOD::System_Create(&m_fmodSystem);
+	AudioSystem g_audioSystem;
 
-	void* extradriverdata = nullptr;
-	m_fmodSystem->init(32, FMOD_INIT_NORMAL, extradriverdata);
-	return true;
-}
-
-void kiko::AudioSystem::Shutdown()
-{
-	for (auto sound : m_sounds) sound.second->release();
-	m_sounds.clear();
-
-	m_fmodSystem->close();
-	m_fmodSystem->release();
-}
-
-void kiko::AudioSystem::Update()
-{
-	m_fmodSystem->update();
-}
-
-void kiko::AudioSystem::AddAudio(const std::string& name, const std::string& filename)
-{
-	if (m_sounds.find(name) == m_sounds.end())
+	bool kiko::AudioSystem::Initialize()
 	{
-		FMOD::Sound* sound = nullptr;
-		m_fmodSystem->createSound(filename.c_str(), FMOD_DEFAULT, 0, &sound);
-		m_sounds[name] = sound;
-	}
-}
+		FMOD::System_Create(&m_fmodSystem);
 
-void kiko::AudioSystem::PlayOneShot(const std::string& name)
-{
-	auto iter = m_sounds.find(name);
-	if (iter != m_sounds.end())
+		void* extradriverdata = nullptr;
+		m_fmodSystem->init(32, FMOD_INIT_NORMAL, extradriverdata);
+		return true;
+	}
+
+	void kiko::AudioSystem::Shutdown()
 	{
-		FMOD::Sound* sound = iter->second;
-		sound->setMode(FMOD_LOOP_OFF);
+		for (auto sound : m_sounds) sound.second->release();
+		m_sounds.clear();
 
-		FMOD::Channel* channel;
-		m_fmodSystem->playSound(sound, 0, false, &channel);
+		m_fmodSystem->close();
+		m_fmodSystem->release();
 	}
+
+	void kiko::AudioSystem::Update()
+	{
+		m_fmodSystem->update();
+	}
+
+	void kiko::AudioSystem::AddAudio(const std::string& name, const std::string& filename)
+	{
+		if (m_sounds.find(name) == m_sounds.end())
+		{
+			FMOD::Sound* sound = nullptr;
+			m_fmodSystem->createSound(filename.c_str(), FMOD_DEFAULT, 0, &sound);
+			m_sounds[name] = sound;
+		}
+	}
+
+	void kiko::AudioSystem::PlayOneShot(const std::string& name)
+	{
+		auto iter = m_sounds.find(name);
+		if (iter != m_sounds.end())
+		{
+			FMOD::Sound* sound = iter->second;
+			sound->setMode(FMOD_LOOP_OFF);
+
+			FMOD::Channel* channel;
+			m_fmodSystem->playSound(sound, 0, false, &channel);
+		}
+	}
+
 }
 
 

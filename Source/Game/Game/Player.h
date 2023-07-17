@@ -1,7 +1,7 @@
 #pragma once
-#include "Actor.h"
+#include "Framework/Actor.h"
 
-class Player : public Actor
+class Player : public kiko::Actor
 {
 public:
 	Player(float speed, float turnRate, const kiko::Transform& transform, const kiko::Model& model) :
