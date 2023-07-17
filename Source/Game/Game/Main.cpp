@@ -4,6 +4,7 @@
 #include"Input/InputSystem.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Audio/AudioSystem.h"
 
 #include <iostream> 
 #include <vector>
@@ -37,6 +38,12 @@ public:
 
 int main(int argc, char* argv[])
 {
+	kiko::AudioSystem audioSystem;
+	audioSystem.Initialize();
+	audioSystem.AddAudio("hit", "Hit.wav");
+	audioSystem.AddAudio("explosion", "Explosion.wav");
+	audioSystem.AddAudio("laser", "Laser.wav");
+
 	kiko::seedRandom((unsigned int)time(nullptr));
 	kiko::setFilePath("assets");
 
@@ -81,6 +88,14 @@ int main(int argc, char* argv[])
 	while (!quit)
 	{
 		kiko::g_time.Tick();
+
+		audioSystem.Update();
+
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
+		{
+			audioSystem.PlayOneShot("hit");
+		}
+
 		kiko::g_inputSystem.Update();
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_ESCAPE))
 		{
