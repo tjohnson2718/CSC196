@@ -39,9 +39,8 @@ public:
 
 int main(int argc, char* argv[])
 {
+	kiko::MemoryTracker::Initialize();
 	std::unique_ptr<int> up = std::make_unique<int>(10);
-
-	kiko::g_memoryTracker.DisplayInfo();
 
 	kiko::seedRandom((unsigned int)time(nullptr));
 	kiko::setFilePath("assets");
@@ -74,7 +73,7 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < 5; i++)
 	{
-		std::unique_ptr<Enemy> enemy = make_unique<Enemy>(10.0f, kiko::Pi, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::TwoPi), 3.0f }, model);
+		std::unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(4.0f, 7.0f), kiko::Pi, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::TwoPi), 3.0f }, model);
 		scene.Add(move(enemy));
 	}
 	
@@ -124,7 +123,6 @@ int main(int argc, char* argv[])
 
 	stars.clear();
 	scene.RemoveAll();
-	kiko::g_memoryTracker.DisplayInfo();
 
 	return 0;
 }

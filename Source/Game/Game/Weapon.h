@@ -7,7 +7,10 @@ public:
 	Weapon(float speed, const kiko::Transform& transform, const kiko::Model& model) :
 		Actor{ transform, model },
 		m_speed{ speed }
-	{}
+	{
+		m_lifespan = 2.0f;
+	}
+
 
 	void Update(float dt) override;
 

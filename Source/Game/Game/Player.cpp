@@ -5,6 +5,8 @@
 
 void Player::Update(float dt)
 {
+	Actor::Update(dt);
+	
 	// movement
 	float rotate = 0;
 	if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;

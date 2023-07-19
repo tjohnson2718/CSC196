@@ -1,13 +1,24 @@
 #include "Scene.h"
-#include "Actor.h"
+//#include "Actor.h"
 
 namespace kiko
 {
 	void Scene::Update(float dt)
 	{
-		for (auto& actor : m_actors)
+		// remove destroyed actors
+		auto iter =  m_actors.begin();
+		while (iter != m_actors.end())
 		{
-			actor->Update(dt);
+			(*iter)->Update(dt);
+			if ((*iter)->m_destroyed)
+			{
+				iter = m_actors.erase(iter);
+			}
+			else
+			{
+				iter++;
+			}
+
 		}
 	}
 
@@ -23,11 +34,6 @@ namespace kiko
 	{
 		actor->m_scene = this;
 		m_actors.push_back(std::move(actor));
-	}
-
-	void Scene::Remove(Actor* actor)
-	{
-		//m_actors.remove(actor);
 	}
 
 	void Scene::RemoveAll()
