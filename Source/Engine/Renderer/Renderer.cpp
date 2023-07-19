@@ -35,7 +35,7 @@ namespace kiko
 		SDL_RenderPresent(m_renderer);
 	}
 
-	void Renderer::SetColor(int r, int g, int b, int a)
+	void Renderer::SetColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 	{
 		SDL_SetRenderDrawColor(m_renderer, r, g, b, a);
 	}

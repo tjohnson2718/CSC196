@@ -27,8 +27,8 @@ void Player::Update(float dt)
 	{
 		// create weapon
 		kiko::Transform transform{ m_transform.position, m_transform.rotation, 1 };
-		Weapon* weapon = new Weapon{ 25, transform, m_model };
-		m_scene->Add(weapon);
+		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(25.0f, transform, m_model);
+		m_scene->Add(std::move(weapon));
 
 	}
 }

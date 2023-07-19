@@ -19,5 +19,6 @@ namespace kiko
 
 	private:
 		std::vector<Vector2> m_points;
+		Color m_color;
 	};
 }

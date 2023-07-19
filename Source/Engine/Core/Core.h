@@ -3,6 +3,7 @@
 #include "Core/FileIO.h"
 #include "Core/Memory.h"
 #include "Core/Time.h"
+#include "Core/Color.h"
 
 //math
 #include "Core/Vector2.h"

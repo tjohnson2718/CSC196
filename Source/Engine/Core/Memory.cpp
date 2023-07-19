@@ -5,9 +5,7 @@ kiko::MemoryTracker kiko::g_memoryTracker;
 void* operator new (size_t size)
 {
 	void* p = malloc(size);
-
 	kiko::g_memoryTracker.Add(p, size);
-	
 
 	return p;
 }

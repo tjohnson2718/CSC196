@@ -39,6 +39,9 @@ public:
 
 int main(int argc, char* argv[])
 {
+	std::unique_ptr<int> up = std::make_unique<int>(10);
+
+	kiko::g_memoryTracker.DisplayInfo();
 
 	kiko::seedRandom((unsigned int)time(nullptr));
 	kiko::setFilePath("assets");
@@ -66,12 +69,13 @@ int main(int argc, char* argv[])
 	}
 
 	kiko::Scene scene;
-	scene.Add(new Player{ 200, kiko::Pi, { { 400, 300 }, 0, 6  }, model });
+	std::unique_ptr<Player> player = make_unique<Player>(200.0f, kiko::Pi, kiko::Transform{ { 400, 300 }, 0, 6 }, model);
+	scene.Add(std::move(player));
 
 	for (int i = 0; i < 5; i++)
 	{
-		Enemy* enemy = new Enemy{ 10.0f, kiko::Pi, { { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::TwoPi), 3.0f}, model};
-		scene.Add(enemy);
+		std::unique_ptr<Enemy> enemy = make_unique<Enemy>(10.0f, kiko::Pi, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::TwoPi), 3.0f }, model);
+		scene.Add(move(enemy));
 	}
 	
 
@@ -117,6 +121,10 @@ int main(int argc, char* argv[])
 
 		//this_thread::sleep_for(chrono::milliseconds(10));
 	}
+
+	stars.clear();
+	scene.RemoveAll();
+	kiko::g_memoryTracker.DisplayInfo();
 
 	return 0;
 }
