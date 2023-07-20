@@ -3,7 +3,7 @@
 class Enemy : public kiko::Actor
 {
 public:
-	Enemy(float speed, float turnRate, const kiko::Transform& transform, const kiko::Model& model) :
+	Enemy(float speed, float turnRate, const kiko::Transform& transform, std::shared_ptr<kiko::Model> model) :
 		Actor{ transform, model },
 		m_speed{ speed },
 		m_turnRate{ turnRate }
@@ -13,6 +13,7 @@ public:
 	}
 
 	void Update(float dt) override;
+	void OnCollision(Actor* actor) override;
 
 private:
 	float m_speed = 0;

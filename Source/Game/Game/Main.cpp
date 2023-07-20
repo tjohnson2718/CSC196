@@ -1,11 +1,12 @@
 #include "Renderer/Renderer.h"
 #include "Core/Core.h" 
-#include "Renderer/Model.h"
+#include "Renderer/ModelManager.h"
 #include"Input/InputSystem.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Audio/AudioSystem.h"
 #include "Framework/Scene.h"
+
 
 #include <iostream> 
 #include <vector>
@@ -54,9 +55,6 @@ int main(int argc, char* argv[])
 	kiko::g_audioSystem.Initialize();
 	kiko::g_audioSystem.AddAudio("shoot", "Laser2.wav");
 
-	kiko::Model model;
-	model.Load("ship.txt");
-
 	vector<Star> stars; 
 
 	for (int i = 0; i < 1000; i++)
@@ -68,12 +66,14 @@ int main(int argc, char* argv[])
 	}
 
 	kiko::Scene scene;
-	std::unique_ptr<Player> player = make_unique<Player>(200.0f, kiko::Pi, kiko::Transform{ { 400, 300 }, 0, 6 }, model);
+	std::unique_ptr<Player> player = make_unique<Player>(200.0f, kiko::Pi, kiko::Transform{ { 400, 300 }, 0, 6 }, kiko::g_manager.Get("ship.txt"));
+	player->m_tag = "Player";
 	scene.Add(std::move(player));
 
 	for (int i = 0; i < 5; i++)
 	{
-		std::unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(4.0f, 7.0f), kiko::Pi, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::TwoPi), 3.0f }, model);
+		std::unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(4.0f, 7.0f), kiko::Pi, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::TwoPi), 3.0f }, kiko::g_manager.Get("ship.txt"));
+		enemy->m_tag = "Enemy";
 		scene.Add(move(enemy));
 	}
 	

@@ -16,9 +16,11 @@ namespace kiko
 		void Draw(Renderer& renderer, const vec2& position, float rotation, float scale); 
 		void Draw(Renderer& renderer, const Transform& transform); 
 
+		float GetRadius();
 
 	private:
 		std::vector<Vector2> m_points;
 		Color m_color;
+		float m_radius = 0;
 	};
 }

@@ -18,4 +18,22 @@ void Enemy::Update(float dt)
 	m_transform.position += forward * m_speed * m_speed * kiko::g_time.GetDeltaTime();
 	m_transform.position.x = kiko::Wrap(m_transform.position.x, (float)kiko::g_renderer.GetWidth());
 	m_transform.position.y = kiko::Wrap(m_transform.position.y, (float)kiko::g_renderer.GetHeight());
+
+	if (m_fireTimer != 0)
+	{
+
+	}
+	else
+	{
+
+	}
+}
+
+void Enemy::OnCollision(Actor* other)
+{
+	//Player* p = dynamic_cast<Player*>(other)
+	if (other->m_tag == "Player")
+	{
+		m_destroyed = true;
+	}
 }
