@@ -10,26 +10,24 @@ namespace kiko
 		while (iter != m_actors.end())
 		{
 			(*iter)->Update(dt);
-			((*iter)->m_destroyed) ? m_actors.erase(iter) : ++iter;
+			((*iter)->m_destroyed) ? iter = m_actors.erase(iter) : iter++;	
+		}
 
-			// check collision
-			for (auto iter1 = m_actors.begin(); iter1 != m_actors.end(); iter1++)
+		// check collision
+		for (auto iter1 = m_actors.begin(); iter1 != m_actors.end(); iter1++)
+		{
+			for (auto iter2 = std::next(iter1, 1); iter2 != m_actors.end(); iter2++)
 			{
-				for (auto iter2 = std::next(iter1, 1); iter2 != m_actors.end(); iter2++)
-				{
-					float distance = (*iter1)->m_transform.position.Distance((*iter2)->m_transform.position);
-					float radius = (*iter1)->GetRadius() + (*iter2)->GetRadius();
+				float distance = (*iter1)->m_transform.position.Distance((*iter2)->m_transform.position);
+				float radius = (*iter1)->GetRadius() + (*iter2)->GetRadius();
 
-					if (distance >= radius)
-					{
-						(*iter1)->OnCollision(iter2->get());
-						(*iter2)->OnCollision(iter1->get());
-					}
+				if (distance <= radius)
+				{
+					(*iter1)->OnCollision(iter2->get());
+					(*iter2)->OnCollision(iter1->get());
 				}
 			}
 		}
-
-		
 	}
 
 	void Scene::Draw(Renderer& renderer)
