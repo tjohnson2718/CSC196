@@ -16,6 +16,6 @@ public:
 	void OnCollision(Actor* actor) override;
 
 private:
-	float m_speed = 0;
+	float m_speed = 1;
 
 };

@@ -7,6 +7,7 @@
 #include "Audio/AudioSystem.h"
 #include "Framework/Scene.h"
 
+#include "SpaceGame.h"
 
 #include <iostream> 
 #include <vector>
@@ -51,9 +52,11 @@ int main(int argc, char* argv[])
 	kiko::g_renderer.CreateWindow("CSC196", 800, 600);
 	
 	kiko::g_inputSystem.Initialize();
-
 	kiko::g_audioSystem.Initialize();
-	kiko::g_audioSystem.AddAudio("shoot", "Laser2.wav");
+
+	//Create the game
+	unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
+	game->Initialize();
 
 	vector<Star> stars; 
 
@@ -64,19 +67,6 @@ int main(int argc, char* argv[])
 
 		stars.push_back(Star(pos, vel));
 	}
-
-	kiko::Scene scene;
-	std::unique_ptr<Player> player = make_unique<Player>(200.0f, kiko::Pi, kiko::Transform{ { 400, 300 }, 0, 6 }, kiko::g_manager.Get("ship.txt"));
-	player->m_tag = "Player";
-	scene.Add(std::move(player));
-
-	for (int i = 0; i < 5; i++)
-	{
-		std::unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(4.0f, 7.0f), kiko::Pi, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::TwoPi), 3.0f }, kiko::g_manager.Get("ship.txt"));
-		enemy->m_tag = "Enemy";
-		scene.Add(move(enemy));
-	}
-	
 
 	// main game loop
 	bool quit = false;
@@ -98,7 +88,7 @@ int main(int argc, char* argv[])
 			quit = true;
 		}
 
-		scene.Update(kiko::g_time.GetDeltaTime());
+		game->Update(kiko::g_time.GetDeltaTime());
 		
 		kiko::g_renderer.SetColor(0, 0, 0, 0); //sets color to black
 		kiko::g_renderer.BeginFrame(); //clears the screen, allows for less static
@@ -114,15 +104,12 @@ int main(int argc, char* argv[])
 			kiko::g_renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}
 
-		scene.Draw(kiko::g_renderer);
+		game->Draw(kiko::g_renderer);
 
 		kiko::g_renderer.EndFrame();
-
-		//this_thread::sleep_for(chrono::milliseconds(10));
 	}
 
 	stars.clear();
-	scene.RemoveAll();
 
 	return 0;
 }

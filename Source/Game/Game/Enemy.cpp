@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "SpaceGame.h"
 #include "Framework/Scene.h"
 #include "Renderer/Renderer.h"
 
@@ -34,6 +35,7 @@ void Enemy::OnCollision(Actor* other)
 	//Player* p = dynamic_cast<Player*>(other)
 	if (other->m_tag == "Player")
 	{
+		m_game->AddPoints(100);
 		m_destroyed = true;
 	}
 }
