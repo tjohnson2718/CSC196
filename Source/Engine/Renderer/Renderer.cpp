@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "SDL2-2.28.0/include/SDL_tff.h"
+#include "SDL2-2.28.0/include/SDL_ttf.h"
 
 namespace kiko
 {
@@ -8,13 +8,16 @@ namespace kiko
 	bool kiko::Renderer::Initialize()
 	{
 		SDL_Init(SDL_INIT_VIDEO);
+		TTF_Init();
 
 		return true;
 	}
 
 	void kiko::Renderer::Shutdown()
 	{
-
+		SDL_DestroyRenderer(m_renderer);
+		SDL_DestroyWindow(m_window);
+		TTF_Quit();
 	}
 
 	void kiko::Renderer::CreateWindow(const std::string& title, int width, int height)

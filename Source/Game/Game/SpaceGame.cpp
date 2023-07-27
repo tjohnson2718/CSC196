@@ -3,17 +3,40 @@
 #include "Enemy.h"
 
 #include "Framework/Scene.h"
+#include "Framework/EmitterData.h"
+
+#include "Core/Vector2.h"
 
 #include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/ModelManager.h"
+#include "Renderer/ParticleSystem.h"
 
 //Include font and text
 
 bool SpaceGame::Initialize()
 {
 	// font and text
+
+	//Particle System
+
+	/*EmitterData data;
+	data.burst = true;
+	data.burstCount = 100;
+	data.spawnRate = 200;
+	data.angle = 0;
+	data.angleRange = kiko::Pi;
+	data.lifetimeMin = 0.5f;
+	data.lifetimeMin = 1.5f;
+	data.speedMin = 50;
+	data.speedMax = 250;
+	data.damping = 0.5f;
+	data.color = kiko::Color{ 1, 0, 0, 1 };
+	Transform transform{ { g_inputSystem.GetMousePosition() }, 0, 1 };
+	auto emitter = std::make_unique<Emitter>(transform, data);
+	emitter->m_lifespan = 1.0f;
+	scene->Add(std::move(emitter));*/
 
 	// Audio
 	kiko::g_audioSystem.AddAudio("shoot", "Laser2.wav");

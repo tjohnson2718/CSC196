@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <iostream>
 #include <string>
+
 namespace kiko
 {
 	class Color
