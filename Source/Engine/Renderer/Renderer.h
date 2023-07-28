@@ -29,12 +29,16 @@ namespace kiko
 		int GetWidth() const { return m_width; }
 		int GetHeight() const { return m_height; }
 
+		friend class Text;
+		
+
 	private:
 		int m_width = 0;
 		int m_height = 0;
 
-		SDL_Renderer* m_renderer = nullptr;
+		
 		SDL_Window* m_window = nullptr;
+		SDL_Renderer* m_renderer = nullptr;
 	};
 
 	extern Renderer g_renderer;

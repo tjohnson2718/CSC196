@@ -18,11 +18,16 @@
 #include "Renderer/ParticleData.h"
 #include "Renderer/ParticleSystem.h"
 
+#include "Renderer/Font.h"
+#include "Renderer/Text.h"
+
 //Include font and text
 
 bool SpaceGame::Initialize()
 {
 	// font and text
+	
+
 
 	// Audio
 	kiko::g_audioSystem.AddAudio("shoot", "Laser2.wav");
@@ -42,6 +47,7 @@ void SpaceGame::Update(float dt)
 	switch (m_state)
 	{
 	case SpaceGame::eState::Title:
+		
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
 		{
 			m_state = eState::StartGame;

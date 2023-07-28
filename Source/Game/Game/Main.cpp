@@ -10,6 +10,9 @@
 #include "SpaceGame.h"
 #include "Renderer/ParticleSystem.h"
 
+#include "Renderer/Font.h"
+#include "Renderer/Text.h"
+
 #include <iostream> 
 #include <vector>
 #include <thread>
@@ -61,6 +64,11 @@ int main(int argc, char* argv[])
 	unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
 	game->Initialize();
 
+	//Text
+	/*std::shared_ptr<kiko::Font> font = std::make_shared<kiko::Font>("font.tff", 24);
+	std::unique_ptr<kiko::Text> text = std::make_unique<kiko::Text>(font);
+	text->Create(kiko::g_renderer, "NEUMONT", kiko::Color{ 1, 1, 1, 1 });*/
+
 	vector<Star> stars; 
 
 	for (int i = 0; i < 1000; i++)
@@ -111,6 +119,7 @@ int main(int argc, char* argv[])
 
 		game->Draw(kiko::g_renderer);
 		kiko::g_particleSystem.Draw(kiko::g_renderer);
+		//text->Draw(kiko::g_renderer, 400, 300);
 
 		kiko::g_renderer.EndFrame();
 	}

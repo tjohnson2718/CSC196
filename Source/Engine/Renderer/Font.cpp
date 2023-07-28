@@ -3,7 +3,7 @@
 
 namespace kiko
 {
-	Font::Font(const std::string& filename, int fontSize)
+	Font::Font(const std::string* filename, int fontSize)
 	{
 		Load(filename, fontSize);
 	}
@@ -16,9 +16,10 @@ namespace kiko
 		}
 	}
 
-	void Font::Load(const std::string& filename, int fontSize)
+	void Font::Load(const std::string* filename, int fontSize)
 	{
-		//m_ttfFont = TTF_OpenFont(filename, fontSize);
-		filename.c_str();
+		const char* c_filename = filename->c_str();
+		m_ttfFont = TTF_OpenFont(c_filename, fontSize);
+		filename->c_str();
 	}
 }
