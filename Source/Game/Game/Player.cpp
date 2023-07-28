@@ -3,6 +3,8 @@
 #include "Weapon.h"
 #include "Framework/Scene.h"
 #include "SpaceGame.h"
+#include "Renderer/ParticleSystem.h"
+#include "Framework/Emitter.h"
 
 void Player::Update(float dt)
 {
@@ -29,8 +31,8 @@ void Player::Update(float dt)
 		!kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE))
 	{
 		// create weapon
-		kiko::Transform transform{ m_transform.position, m_transform.rotation, 1 };
-		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(25.0f, transform, m_model);
+		kiko::Transform transform{ m_transform.position, m_transform.rotation + kiko::DegreesToRadians(10.0f), 1 };
+		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(400.0f, transform, m_model);
 		weapon->m_tag = "Player";
 		m_scene->Add(std::move(weapon));
 

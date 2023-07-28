@@ -2,7 +2,9 @@
 #include "Player.h"
 #include "Enemy.h"
 
+#include "Framework/Actor.h"
 #include "Framework/Scene.h"
+#include "Framework/Emitter.h"
 #include "Framework/EmitterData.h"
 
 #include "Core/Vector2.h"
@@ -11,6 +13,9 @@
 #include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/ModelManager.h"
+
+#include "Renderer/Particle.h"
+#include "Renderer/ParticleData.h"
 #include "Renderer/ParticleSystem.h"
 
 //Include font and text
@@ -19,33 +24,11 @@ bool SpaceGame::Initialize()
 {
 	// font and text
 
-	//Particle System
-
-	/*EmitterData data;
-	data.burst = true;
-	data.burstCount = 100;
-	data.spawnRate = 200;
-	data.angle = 0;
-	data.angleRange = kiko::Pi;
-	data.lifetimeMin = 0.5f;
-	data.lifetimeMin = 1.5f;
-	data.speedMin = 50;
-	data.speedMax = 250;
-	data.damping = 0.5f;
-	data.color = kiko::Color{ 1, 0, 0, 1 };
-	Transform transform{ { g_inputSystem.GetMousePosition() }, 0, 1 };
-	auto emitter = std::make_unique<Emitter>(transform, data);
-	emitter->m_lifespan = 1.0f;
-	scene->Add(std::move(emitter));*/
-
 	// Audio
 	kiko::g_audioSystem.AddAudio("shoot", "Laser2.wav");
 
 	// Scene
 	m_scene = std::make_unique<kiko::Scene>();
-
-	
-
 
 	return true;
 }
@@ -66,6 +49,8 @@ void SpaceGame::Update(float dt)
 		break;
 
 	case SpaceGame::eState::StartGame:
+
+		//Particle System
 		m_score = 0;
 		m_lives = 3;
 		m_state = eState::StartLevel;
@@ -87,6 +72,29 @@ void SpaceGame::Update(float dt)
 	case SpaceGame::eState::Game:
 		m_spawnTimer += dt;
 
+		//Emitter
+		{
+			if (kiko::g_inputSystem.GetKeyDown(SDL_BUTTON_LEFT))
+			{
+				kiko::EmitterData data;
+				data.burst = true;
+				data.burstCount = 100;
+				data.spawnRate = 200;
+				data.angle = 0;
+				data.angleRange = kiko::Pi;
+				data.lifetimeMin = 0.5f;
+				data.lifetimeMin = 1.5f;
+				data.speedMin = 50;
+				data.speedMax = 250;
+				data.damping = 0.5f;
+				data.color = kiko::Color{ 1, 0, 0, 1 };
+				kiko::Transform transform{ { kiko::g_inputSystem.GetMousePosition() }, 0, 1 };
+				auto emitter = std::make_unique<kiko::Emitter>(transform, data);
+				emitter->m_lifespan = 1.0f;
+				m_scene->Add(std::move(emitter));
+			}
+		}
+
 		if (m_spawnTimer >= m_spawnTime)
 		{
 			m_spawnTimer = 0;
@@ -101,6 +109,15 @@ void SpaceGame::Update(float dt)
 	case SpaceGame::eState::PlayerDead:
 		if (m_lives == 0) m_state = eState::GameOver;
 		else m_state = eState::StartLevel;
+
+		if (m_lives == 0)
+		{
+			m_state = eState::GameOver;
+		}
+		else
+		{
+			m_state = eState::StartLevel;
+		}
 
 		break;
 

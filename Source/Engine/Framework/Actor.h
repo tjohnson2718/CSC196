@@ -33,9 +33,11 @@ namespace kiko
 		kiko::Transform m_transform;
 		std::string m_tag;
 
+		float m_lifespan = -1.0f;
+
 	protected:
 		bool m_destroyed = false;
-		float m_lifespan = -1.0f;
+		
 
 		std::shared_ptr<Model> m_model;
 	};

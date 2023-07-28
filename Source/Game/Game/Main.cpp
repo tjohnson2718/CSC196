@@ -8,6 +8,7 @@
 #include "Framework/Scene.h"
 
 #include "SpaceGame.h"
+#include "Renderer/ParticleSystem.h"
 
 #include <iostream> 
 #include <vector>
@@ -54,6 +55,8 @@ int main(int argc, char* argv[])
 	kiko::g_inputSystem.Initialize();
 	kiko::g_audioSystem.Initialize();
 
+	
+
 	//Create the game
 	unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
 	game->Initialize();
@@ -75,6 +78,8 @@ int main(int argc, char* argv[])
 		kiko::g_time.Tick();
 
 		kiko::g_audioSystem.Update();
+
+		kiko::g_particleSystem.Update(1.0f);
 
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) &&
 			!kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE))
@@ -105,6 +110,7 @@ int main(int argc, char* argv[])
 		}
 
 		game->Draw(kiko::g_renderer);
+		kiko::g_particleSystem.Draw(kiko::g_renderer);
 
 		kiko::g_renderer.EndFrame();
 	}

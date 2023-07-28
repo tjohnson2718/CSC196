@@ -1,4 +1,5 @@
 #include "ParticleSystem.h"
+#include "Renderer/Renderer.h"
 
 namespace kiko
 {
@@ -9,6 +10,7 @@ namespace kiko
 		for (auto& particle : m_particles)
 		{
 			if (particle.m_isActive) particle.Update(dt);
+			particle.Draw(g_renderer);
 		}
 	}
 
