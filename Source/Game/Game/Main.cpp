@@ -45,7 +45,7 @@ public:
 
 int main(int argc, char* argv[])
 {
-	kiko::MemoryTracker::Initialize();
+	//kiko::MemoryTracker::Initialize();
 	std::unique_ptr<int> up = std::make_unique<int>(10);
 
 	kiko::seedRandom((unsigned int)time(nullptr));

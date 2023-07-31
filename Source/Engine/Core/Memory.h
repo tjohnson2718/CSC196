@@ -1,3 +1,4 @@
+#pragma once 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -14,7 +15,7 @@ namespace kiko
 	{
 	public:
 		static bool Initialize();
-		static void DisplayInfo();
+		static bool DisplayInfo();
 	};
 }
 

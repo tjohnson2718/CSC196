@@ -10,8 +10,9 @@ namespace kiko
 		return true;
 	}
 
-	void MemoryTracker::DisplayInfo()
+	bool MemoryTracker::DisplayInfo()
 	{
 		_CrtMemDumpAllObjectsSince(NULL);
+		return true;
 	}
 }
